@@ -1,6 +1,12 @@
 package AG;
 
+import util.CromosomaFactoria;
+import util.Funciones;
+import util.SeleccionFactoria;
+import util.Selecciones;
 import AG.Cromosoma.Cromosoma;
+import AG.Cromosoma.CromosomaFuncion1;
+import AG.Seleccion.Seleccion;
 
 public abstract class AlgoritmoGenetico {
 
@@ -8,41 +14,105 @@ public abstract class AlgoritmoGenetico {
 	private Cromosoma[] pob;
 	
 	//Tamanyo de la poblacion
-	private int tam_pob;
+	private int tamPoblacion;
+	
+	//Numero de generaciones
+	private int generacion;
 	
 	//Numero maximo de generaciones
-	private int num_max_gen;
+	private int numMaxGen;
 	
 	//Cromosoma del mejor individuo
-	private Cromosoma el_mejor;
+	private Cromosoma elMejor;
 	
 	//Posicion del cromosoma del mejor individuo en la poblacion
-	private int pos_mejor;
+	private int posMejor;
 	
 	//Probabilidad de Cruce
-	private double prob_cruce;
+	private double probCruce;
 	
 	//Probabilidad de Mutacion
-	private double prob_mut;
+	private double probMut;
 	
 	//Tolerancia de la representacion
-	private double tol;
+	private double tolerancia;
+	
+	//Funcion
+	private Funciones funcion;
+	
+	//Seleccion
+	private Seleccion seleccion;
+	
+	//Tipos de seleccion
+	private Selecciones tipoSeleccion;
 
-	public AlgoritmoGenetico() {
+	public AlgoritmoGenetico(Funciones funcion, Selecciones seleccion) {
+		this.funcion = funcion;
+		this.tipoSeleccion = seleccion;
+		inicializa();
+		evaluarPoblacion();
 		
 	}
 	
-	public abstract void inicializa();
+	public void inicializa(){
+		seleccion = SeleccionFactoria.crearSeleccionador(this.tipoSeleccion);
+		for(int i = 0; i < this.tamPoblacion; i++){
+			pob[i] = CromosomaFactoria.crearCromosoma(this.funcion);
+			pob[i].inicializaCromosoma();
+			pob[i].setAptitud(pob[i].evalua());	
+			
+		}
+	}
 	
-	public abstract void evaluarPoblacion();
+	public void evaluarPoblacion() {
+		double punt_acum = 0;
+		double aptitud_mejor = 0;
+		double suma_aptitud = 0; 
+		
+		Cromosoma mejor_seleccion = CromosomaFactoria.crearCromosoma(this.funcion);
+		
+		for(int i = 0; i < tamPoblacion; i++){
+			suma_aptitud = suma_aptitud + pob[i].getAptitud();
+			if(pob[i].getAptitud() > aptitud_mejor){
+				mejor_seleccion = pob[i];
+				aptitud_mejor = mejor_seleccion.getAptitud();
+			}
+		}
+		
+		for(int i = 0; i < tamPoblacion; i++){
+			pob[i].setPuntuacion(pob[i].getAptitud() / suma_aptitud);
+			pob[i].setPuntuacionAcumulada(pob[i].getPuntuacionAcumulada() + pob[i].getPuntuacion());
+			punt_acum = punt_acum + pob[i].getPuntuacion();
+		}
+		
+		if( mejor_seleccion.getAptitud() > elMejor.getAptitud()){
+			elMejor = mejor_seleccion;
+		}
+		
+	}
 	
-	public abstract void seleccionRuleta();
+	public void reproduccion() {
+		int[] selCruce = new int[tamPoblacion];
+		int numSelCruce = 0;
+		int puntoCruce;
+		double probabilidad;
+		Cromosoma hijo1, hijo2;
+		
+		
+	}
 	
-	public abstract void reproduccion();
+	public void mutacion() {
+	}
 	
-	public abstract void mutacion();
-	
-	public abstract void ejecucion();
-	
+	public void ejecucion(){
+		this.generacion++;
+		Cromosoma[] nuevaPob = new Cromosoma[tamPoblacion];
+		for(int i = 0; i < this.tamPoblacion; i++)
+			nuevaPob[i] = CromosomaFactoria.crearCromosoma(this.funcion);
+		seleccion.ejecutaSeleccion(pob, nuevaPob, tamPoblacion);
+		reproduccion();
+		mutacion();
+		evaluarPoblacion();
+	}
 	
 }

@@ -1,5 +1,7 @@
 package AG.Cromosoma;
 
+import util.MiRandom;
+
 public abstract class Cromosoma {
 
 	//Cadena de bits (fenotipo)
@@ -7,21 +9,25 @@ public abstract class Cromosoma {
 
 	//Longitud del cromosoma
 	private int longitudCromosoma;
-	
+
 	//Fenotipo
 	private double fenotipo;
-	
+
 	//Funcion de evaluacion fitness adaptacion
 	private double aptitud;
-	
+
 	//Puntuacion relativa (aptitud/suma)
 	private double puntuacion;
-	
+
 	//Puntuacion acumulada para seleccion
-	private double punt_acum;
-	
+	private double puntuacionAcumulada;
+
 	//Tolerancia
 	private double tolerancia;
+
+	//Valores minimo y maximo
+	private double xmin;
+	private double xmax; 
 
 	public boolean[] getGenes() {
 		return genes;
@@ -63,12 +69,12 @@ public abstract class Cromosoma {
 		this.puntuacion = puntuacion;
 	}
 
-	public double getPunt_acum() {
-		return punt_acum;
+	public double getPuntuacionAcumulada() {
+		return puntuacionAcumulada;
 	}
 
-	public void setPunt_acum(double punt_acum) {
-		this.punt_acum = punt_acum;
+	public void setPuntuacionAcumulada(double puntuacionAcumulada) {
+		this.puntuacionAcumulada = puntuacionAcumulada;
 	}
 
 	public double getTolerancia() {
@@ -77,10 +83,59 @@ public abstract class Cromosoma {
 
 	public void setTolerancia(double tolerancia) {
 		this.tolerancia = tolerancia;
+	}	
+
+	public double getXmin() {
+		return xmin;
+	}
+
+	public void setXmin(double xmin) {
+		this.xmin = xmin;
+	}
+
+	public double getXmax() {
+		return xmax;
+	}
+
+	public void setXmax(double xmax) {
+		this.xmax = xmax;
+	}
+
+	public double fenotipo(){
+		String v = "";
+		for(int i = 0; i < this.longitudCromosoma; i++)
+			if(this.genes[i])
+				v = v + "1";
+			else
+				v = v + "0";		
+		return (this.xmin + Integer.parseInt(v, 2) * ((this.xmax - this.xmin)/(Math.pow(2, this.longitudCromosoma) - 1)));
+	}
+
+	public int calculoLongitudCromosoma(){
+		return (int) Math.abs(Math.log10(1+((this.xmax-this.xmin)/this.tolerancia))/Math.log10(2));
+	}
+
+	public void inicializaCromosoma(){
+		this.longitudCromosoma = calculoLongitudCromosoma();
+		for (int i = 0; i<longitudCromosoma; i++)  
+			this.genes[i] = MiRandom.boolRandom();
+		
 	}
 	
-	public abstract void inicializaCromosoma();
-	
 	public abstract double evalua();
-	
+
+	public void clone(Cromosoma cromosoma) {
+		this.aptitud = cromosoma.aptitud;
+		this.fenotipo = cromosoma.fenotipo;
+		this.longitudCromosoma = cromosoma.longitudCromosoma;
+		this.puntuacion = cromosoma.puntuacion;
+		this.puntuacionAcumulada = cromosoma.puntuacionAcumulada;
+		this.tolerancia = cromosoma.tolerancia;
+		this.xmax = cromosoma.xmax;
+		this.xmin = cromosoma.xmin;
+		this.genes = new boolean[this.longitudCromosoma];
+		for(int i = 0; i < this.longitudCromosoma; i++)
+			this.genes[i] = cromosoma.getGenes()[i];		
+	}
+
 }

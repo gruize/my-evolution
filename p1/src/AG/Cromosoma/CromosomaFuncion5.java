@@ -1,14 +1,12 @@
 package AG.Cromosoma;
 
 public class CromosomaFuncion5 extends Cromosoma{
-
-	private double xmin;
-	private double xmax;
 	
 	@Override
 	public void inicializaCromosoma() {
-		// TODO Auto-generated method stub
-		
+		this.setXmin(-10.0);
+		this.setXmax(10.0);
+		super.inicializaCromosoma();
 	}
 	@Override
 	public double evalua() {
