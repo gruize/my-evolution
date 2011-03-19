@@ -1,18 +1,17 @@
 package AG.Cromosoma;
 
 public class CromosomaFuncion1 extends Cromosoma{
-
-	private double xmin;
-	private double xmax;
 	
 	@Override
 	public void inicializaCromosoma() {
-		// TODO Auto-generated method stub
-		
+		this.setXmin(0.0);		
+		this.setXmax(32.0);
+		super.inicializaCromosoma();
 	}
+	
 	@Override
 	public double evalua() {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 	
