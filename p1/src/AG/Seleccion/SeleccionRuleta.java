@@ -6,8 +6,7 @@ public class SeleccionRuleta implements Seleccion {
 
 	public void ejecutaSeleccion(Cromosoma[] pob,Cromosoma[] nuevaPob,int tamPoblacion){
 		double probabilidad;
-		int posSuperviviente;
-		
+		int posSuperviviente;		
 		for (int i = 0; i < tamPoblacion; i++){
 			probabilidad = Math.random();
 			posSuperviviente = 0;
