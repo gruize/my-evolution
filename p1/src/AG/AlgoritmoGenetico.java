@@ -56,8 +56,6 @@ public class AlgoritmoGenetico {
 		this.elMejor = new CromosomaFactoria().crearCromosoma(funcion, tolerancia);
 	}
 
-
-
 	public Cromosoma[] getPob() {
 		return pob;
 	}
