@@ -29,6 +29,10 @@ public abstract class Cromosoma {
 	private double xmin;
 	private double xmax; 
 
+	public Cromosoma(double tolerancia){
+		this.tolerancia = tolerancia;
+	}
+	
 	public boolean[] getGenes() {
 		return genes;
 	}
@@ -112,11 +116,15 @@ public abstract class Cromosoma {
 	}
 
 	public int calculoLongitudCromosoma(){
-		return (int) Math.abs(Math.log10(1+((this.xmax-this.xmin)/this.tolerancia))/Math.log10(2));
+		double xresta = (this.xmax-this.xmin);
+		double suma = 1+(xresta/this.tolerancia);
+		double dividendo = Math.log10(suma);		 
+		return (int) Math.abs((dividendo/Math.log10(2)));
 	}
 
 	public void inicializaCromosoma(){
 		this.longitudCromosoma = calculoLongitudCromosoma();
+		this.genes = new boolean[this.longitudCromosoma];
 		for (int i = 0; i<longitudCromosoma; i++)  
 			this.genes[i] = MiRandom.boolRandom();
 		

@@ -10,20 +10,20 @@ import AG.Cromosoma.CromosomaFuncion5;
 
 public class CromosomaFactoria {
 
-	public static Cromosoma crearCromosoma(Funciones tipo){
+	public static Cromosoma crearCromosoma(Funciones tipo, double tolerancia){
         switch (tipo){
         	case Ejemplo:
-        		return new CromosomaEjemplo();
+        		return new CromosomaEjemplo(tolerancia);
         	case Funcion1: 
-        		return new CromosomaFuncion1();
+        		return new CromosomaFuncion1(tolerancia);
         	case Funcion2:
-        		return new CromosomaFuncion2();
+        		return new CromosomaFuncion2(tolerancia);
         	case Funcion3: 
-        		return new CromosomaFuncion3();
+        		return new CromosomaFuncion3(tolerancia);
         	case Funcion4:
-        		return new CromosomaFuncion4();
+        		return new CromosomaFuncion4(tolerancia);
         	case Funcion5:
-        		return new CromosomaFuncion5();
+        		return new CromosomaFuncion5(tolerancia);
         	default:
         		return null;
         }

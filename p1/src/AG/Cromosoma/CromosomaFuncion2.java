@@ -2,6 +2,10 @@ package AG.Cromosoma;
 
 public class CromosomaFuncion2 extends Cromosoma{
 	
+	public CromosomaFuncion2(double tolerancia){
+		super(tolerancia);
+	}
+	
 	private double ymin = 4.1;
 	private double ymax = 5.8;
 	
