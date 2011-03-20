@@ -15,8 +15,8 @@ public class CromosomaFuncion1 extends Cromosoma{
 	
 	@Override
 	public double evalua() {
-		
-		return 0;
+		this.setFenotipo(this.fenotipo());
+		return 20 + Math.E - (20 * Math.pow(Math.E, (-0.2*Math.abs(this.getFenotipo())))) - Math.pow(Math.E, Math.cos(2 * Math.PI * this.getFenotipo()));
 	}
 	
 }

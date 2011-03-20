@@ -16,7 +16,7 @@ public class CromosomaEjemplo extends Cromosoma{
 
 	@Override
 	public double evalua() {
-		this.setFenotipo(fenotipo());		
+		this.setFenotipo(this.fenotipo());		
 		return Math.abs((this.getFenotipo()-5)/(2+Math.sin(this.getFenotipo())));
 	}
 
